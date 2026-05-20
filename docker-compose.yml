@@ -1,3 +1,5 @@
+version: '3.8'
+
 networks:
   vuln-lab:
     driver: bridge
@@ -39,7 +41,7 @@ services:
     environment:
       - FTP_USER=admin
       - FTP_PASS=admin
-      - PASV_ADDRESS=192.168.100.20
+      - PASV_ADDRESS=${FTP_TARGET_IP}
     ports:
       - "21:21"
     volumes:
@@ -58,7 +60,7 @@ services:
     image: stilliard/pure-ftpd:hardened
     container_name: vuln-ftp-pure
     environment:
-      - PUBLICHOST=192.168.100.21
+      - PUBLICHOST=${FTP_TARGET_IP}
       - FTP_USER_NAME=anonymous
       - FTP_USER_PASS=
     ports:
@@ -67,7 +69,7 @@ services:
       - ./data/ftp:/home/ftpusers
     networks:
       vuln-lab:
-        ipv4_address: 192.168.100.21
+        ipv4_address: ${FTP_TARGET_IP}
         aliases:
           - ftp-pure
     restart: always
@@ -105,7 +107,7 @@ services:
       - ./configs/apache/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
     networks:
       vuln-lab:
-        ipv4_address: 192.168.100.31
+        ipv4_address: ${WEB_TARGET_IP}
         aliases:
           - apache-status
     restart: always
@@ -125,7 +127,7 @@ services:
       - ./data/web:/usr/share/nginx/html:ro
     networks:
       vuln-lab:
-        ipv4_address: 192.168.100.32
+        ipv4_address: ${WEB_TARGET_IP}
         aliases:
           - nginx-listing
     restart: always
