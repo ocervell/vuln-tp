@@ -594,7 +594,7 @@ scan_docker_images() {
 **Qu'est-ce que Secator ?**
 Secator est un framework d'automatisation sécurité complet qui chaîne plusieurs outils de sécurité ensemble en workflows standardisés. Au lieu de lancer manuellement des outils individuels comme nmap, puis nikto, puis nuclei, Secator orchestre des évaluations multi-outils complexes avec une seule commande. Les pentesteurs professionnels et consultants sécurité utilisent Secator pour standardiser leurs méthodologies, assurer une couverture complète, et générer un reporting cohérent à travers différents engagements.
 
-**Exercice Avancé** (si les ressources le permettent):
+**Exercice avancé** (si les ressources le permettent):
 
 ```bash
 # Installation de pipx
@@ -623,9 +623,9 @@ secator w host_recon ips.txt -p all
 
 ---
 
-## Évaluation et Livrables Finaux
+## Évaluation et livrables Finaux
 
-### Rapports Techniques Requis
+### Rapports techniques requis
 
 #### 1. Rapport de découverte réseau
 - **Méthodologie** détaillée avec commandes utilisées
@@ -647,14 +647,14 @@ secator w host_recon ips.txt -p all
 - **Intégration CI/CD** testée
 - **Métriques d'efficacité** comparative
 
-### Critères d'Évaluation
+### Critères d'évaluation
 
 - **Compréhension technique** (30%): Réponses aux questions d'analyse avec justifications
 - **Application pratique** (40%): Commandes exécutées correctement avec résultats attendus  
 - **Documentation** (20%): Rapports structurés et professionnels
 - **Innovation** (10%): Améliorations ou découvertes au-delà des exigences minimales
 
-### Conseils pour la Réussite
+### Conseils pour la réussite
 
 1. **Documentez tout**: Chaque commande, résultat, et analyse
 2. **Testez vos scripts**: Vérifiez que l'automatisation fonctionne de façon répétable
