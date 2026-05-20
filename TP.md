@@ -597,14 +597,17 @@ Secator est un framework d'automatisation sécurité complet qui chaîne plusieu
 **Exercice Avancé** (si les ressources le permettent):
 
 ```bash
+# Installation de pipx
+sudo apt update
+sudo apt install pipx
+pipx ensurepath
+
 # Installation de Secator
-pip install secator
+pipx install secator
 
-# Lancer workflow complet de reconnaissance
-secator x host_recon 192.168.100.10 -p all
-
-# Comparer avec vos findings manuels
-secator x web 192.168.100.30
+# Lancer workflows complet de reconnaissance
+secator w cidr_recon 192.168.100.0/24
+secator w host_recon ips.txt -p all
 ```
 
 **Questions d'Analyse:**
