@@ -49,7 +49,7 @@ Vous recevez un réseau cible avec des informations minimales. Votre mission: d�
 nmap 192.168.100.0/24
 ```
 
-**Questions d'Analyse:**
+**Questions d'analyse:**
 1. Quels hôtes ont répondu ? Pourquoi certains ne répondent-ils pas ?
 2. Que peut-on déduire des temps de réponse ?
 3. Quelles sont les limites de cette approche ?
@@ -66,7 +66,7 @@ nmap 192.168.100.0/24
 nmap -p- 192.168.100.10
 ```
 
-**Questions d'Analyse:**
+**Questions d'analyse:**
 1. Combien de services supplémentaires ont été découverts ?
 2. Pourquoi les administrateurs utilisent-ils des ports non-standards ?
 3. Quels sont les compromis entre scan complet vs ciblé ?
@@ -80,7 +80,7 @@ nmap -p- 192.168.100.10
 nmap -Pn -sS 192.168.100.0/24
 ```
 
-**Questions d'Analyse:**
+**Questions d'analyse:**
 1. Quelle est la différence de résultats en contournant le ping ?
 2. Comment les scans SYN évitent-ils la détection comparés aux scans connect ?
 3. Quand utiliseriez-vous ces techniques en test légitime ?
@@ -157,7 +157,7 @@ Service: OpenSSH 7.2p2
 └── CVE-XXXX-XXXX: [Autre vulnérabilité]
 ```
 
-**Questions d'Analyse:**
+**Questions d'analyse:**
 1. Quel service a la vulnérabilité avec le score CVSS le plus élevé ?
 2. Quels types de vulnérabilités sont les plus courants ? (RCE, DoS, Info Disclosure)
 3. Comment différencier les vulnérabilités théoriques vs pratiquement exploitables ?
@@ -215,7 +215,7 @@ nmap --script http-* 192.168.100.30
 2. Identifiez les discordances et faux positifs potentiels
 3. Validez les findings critiques avec tests supplémentaires
 
-**Questions d'Analyse:**
+**Questions d'analyse:**
 1. Quelles vulnérabilités NSE a-t-il manquées par rapport à votre recherche manuelle ?
 2. Quels faux positifs avez-vous identifiés et pourquoi ?
 3. Comment combineriez-vous approche manuelle et automatisée de façon optimale ?
@@ -259,7 +259,7 @@ docker-compose ps suricata
 docker exec -it monitor-suricata suricata --dump-config
 ```
 
-**Questions d'Analyse:**
+**Questions d'analyse:**
 1. Quelles interfaces réseau Suricata monitore-t-il ?
 2. Comment le mode promiscuous permet la capture de paquets ?
 3. Quelle est la différence entre déploiement IDS et IPS ?
@@ -313,7 +313,7 @@ docker exec -it monitor-zeek cat /opt/zeek/logs/current/http.log
 
 #### Étape 2: Récréation d'attaque et détection (20 min)
 
-**Exercice Principal:** Reproduisez vos activités des Sections 1-2 en monitorant en temps réel:
+**Exercice principal:** Reproduisez vos activités des Sections 1-2 en monitorant en temps réel:
 
 ```bash
 # Terminal 1: Surveillance alertes Suricata
@@ -327,7 +327,7 @@ nmap -sS 192.168.100.0/24
 nmap --script vuln 192.168.100.10
 ```
 
-**Questions d'Analyse:**
+**Questions d'analyse:**
 1. Comment les différents types de scans nmap apparaissent dans les alertes Suricata ?
 2. Quels patterns de connexion Zeek log-t-il pour les scans de ports ?
 3. Pouvez-vous distinguer les outils automatisés de la reconnaissance manuelle ?
@@ -374,7 +374,7 @@ docker exec -it monitor-suricata suricatasc -c reload-rules
 nmap -sS 192.168.100.10
 ```
 
-**Questions d'Analyse:**
+**Questions d'analyse:**
 1. Comment les paramètres de seuil équilibrent faux positifs vs couverture de détection ?
 2. Quels autres services nécessitent détection brute force personnalisée ?
 3. Comment détecteriez-vous le scan de vulnérabilités de la Section 2 ?
@@ -439,7 +439,7 @@ echo "=== Génération de Rapport ==="
 echo "Scan terminé. Résultats dans $LOG_DIR"
 ```
 
-**Questions d'Analyse:**
+**Questions d'analyse:**
 1. Comment l'automatisation change-t-elle la portée et fréquence des évaluations de sécurité ?
 2. Quelle gestion d'erreurs et logging supplémentaires devraient être inclus ?
 3. Comment modifieriez-vous ce script pour différents environnements réseau ?
@@ -561,7 +561,7 @@ jobs:
         path: /tmp/security_scan_*/*
 ```
 
-**Questions d'Analyse:**
+**Questions d'analyse:**
 1. À quelles étapes CI/CD les scans sécurité devraient-ils s'exécuter ?
 2. Comment équilibrer minutie sécurité avec vitesse de build ?
 3. Quels niveaux de sévérité de vulnérabilité devraient casser les builds ?
@@ -610,7 +610,7 @@ secator w cidr_recon 192.168.100.0/24
 secator w host_recon ips.txt -p all
 ```
 
-**Questions d'Analyse:**
+**Questions d'analyse:**
 1. Comment le workflow de Secator se compare-t-il à votre approche manuelle ?
 2. Quels outils Secator a-t-il inclus que vous n'avez pas utilisés manuellement ?
 3. Quand utiliseriez-vous l'automatisation framework vs scripts personnalisés ?
