@@ -1,0 +1,14 @@
+# Logs et données temporaires
+*.log
+logs/
+data/temp/
+
+# Docker volumes
+volumes/
+
+# Scripts étudiants
+student-scripts/
+rapports/
+
+# Environnement local
+.env.local
