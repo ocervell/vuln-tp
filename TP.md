@@ -1,19 +1,19 @@
 # TP Détection de Vulnérabilités
-**Durée : 8 heures (4 sections de 2h) • Niveau : Bachelor 3**
+**Durée: 8 heures (4 sections de 2h) • Niveau: Bachelor 3**
 
 ---
 
-## Vue d'Ensemble du TP
+## Vue d'ensemble du TP
 
-### Objectifs Pédagogiques
+### Objectifs pédagogiques
 Ce TP progressif vous permettra de maîtriser un processus complet de détection de vulnérabilités en adoptant à la fois la perspective de l'attaquant et du défenseur. Vous apprendrez à découvrir des services réseau, identifier leurs vulnérabilités, puis déployer des systèmes de détection pour monitorer ces activités.
 
-### Architecture du Laboratoire
-Votre environnement de laboratoire Docker simule un réseau entreprise avec :
-- **Réseau cible** : 192.168.100.0/24 avec services vulnérables
-- **Services exposés** : SSH (ports 22/2222), FTP (ports 21/2121), Web (ports 80/8080/8081)
-- **Infrastructure de monitoring** : Suricata IDS et Zeek pour l'analyse de logs
-- **Isolation sécurisée** : Environnement containerisé sans impact sur votre système
+### Architecture du laboratoire
+Votre environnement de laboratoire Docker simule un réseau entreprise avec:
+- **Réseau cible**: 192.168.100.0/24 avec services vulnérables
+- **Services exposés**: SSH (ports 22/2222), FTP (ports 21/2121), Web (ports 80/8080/8081)
+- **Infrastructure de monitoring**: Suricata IDS et Zeek pour l'analyse de logs
+- **Isolation sécurisée**: Environnement containerisé sans impact sur votre système
 
 ### Prérequis
 - Docker et docker-compose installés
@@ -29,7 +29,7 @@ Votre environnement de laboratoire Docker simule un réseau entreprise avec :
 **Qu'est-ce que Nmap ?**
 Nmap (Network Mapper) envoie des paquets spécialement conçus vers les hôtes cibles et analyse les réponses pour déterminer quels services fonctionnent. C'est le standard de l'industrie pour la reconnaissance réseau car il peut contourner les firewalls et fournir un fingerprinting détaillé des services. Les professionnels de sécurité l'utilisent pour la découverte d'actifs, l'évaluation de vulnérabilités et l'audit de sécurité réseau.
 
-**Installation et vérification :**
+**Installation et vérification:**
 ```bash
 # Vérifiez l'installation
 nmap --version
@@ -40,47 +40,47 @@ docker-compose up -d
 
 ### 1.2 Découverte progressive d'hôtes (45 min)
 
-Vous recevez un réseau cible avec des informations minimales. Votre mission : découvrir systématiquement tous les services exposés.
+Vous recevez un réseau cible avec des informations minimales. Votre mission: découvrir systématiquement tous les services exposés.
 
-#### Étape 1 : Découverte d'Hôtes Basique (15 min)
+#### Étape 1: Découverte d'hôtes basique (15 min)
 
 ```bash
 # Scan basique du réseau
 nmap 192.168.100.0/24
 ```
 
-**Questions d'Analyse :**
+**Questions d'Analyse:**
 1. Quels hôtes ont répondu ? Pourquoi certains ne répondent-ils pas ?
 2. Que peut-on déduire des temps de réponse ?
 3. Quelles sont les limites de cette approche ?
 
-**Documentez vos résultats :**
+**Documentez vos résultats:**
 - Nombre d'hôtes découverts
 - Adresses IP actives
 - Ports ouverts identifiés lors du scan initial
 
-#### Étape 2 : Scan Complet des Ports (15 min)
+#### Étape 2: Scan complet des ports (15 min)
 
 ```bash
 # Scan de tous les ports pour un hôte spécifique
 nmap -p- 192.168.100.10
 ```
 
-**Questions d'Analyse :**
+**Questions d'Analyse:**
 1. Combien de services supplémentaires ont été découverts ?
 2. Pourquoi les administrateurs utilisent-ils des ports non-standards ?
 3. Quels sont les compromis entre scan complet vs ciblé ?
 
-**Exercice pratique :** Répétez le scan pour chaque hôte découvert et documentez les différences.
+**Exercice pratique:** Répétez le scan pour chaque hôte découvert et documentez les différences.
 
-#### Étape 3 : Furtivité et Contournement de Firewall (15 min)
+#### Étape 3: Furtivité et contournement de firewall (15 min)
 
 ```bash
 # Scan furtif sans ping
 nmap -Pn -sS 192.168.100.0/24
 ```
 
-**Questions d'Analyse :**
+**Questions d'Analyse:**
 1. Quelle est la différence de résultats en contournant le ping ?
 2. Comment les scans SYN évitent-ils la détection comparés aux scans connect ?
 3. Quand utiliseriez-vous ces techniques en test légitime ?
@@ -98,29 +98,29 @@ nmap --script=banner 192.168.100.0/24
 ```
 
 #### Exercice pratique: cartographie réseau
-Créez une carte topologique complète incluant :
-- **Inventaire d'hôtes :** IP, statut, OS probable
-- **Services découverts :** Port, protocole, version, bannière
-- **Vecteurs d'attaque potentiels :** Services obsolètes, configurations faibles
-- **Priorités d'investigation :** Classement par criticité
+Créez une carte topologique complète incluant:
+- **Inventaire d'hôtes:** IP, statut, OS probable
+- **Services découverts:** Port, protocole, version, bannière
+- **Vecteurs d'attaque potentiels:** Services obsolètes, configurations faibles
+- **Priorités d'investigation:** Classement par criticité
 
-**Template de documentation :**
+**Template de documentation:**
 ```
-Hôte : 192.168.100.X
-├── Port 22/tcp  : OpenSSH 7.2p2
-├── Port 80/tcp  : Apache httpd 2.4.41
+Hôte: 192.168.100.X
+├── Port 22/tcp : OpenSSH 7.2p2
+├── Port 80/tcp : Apache httpd 2.4.41
 ├── Port 2222/tcp: OpenSSH 7.2p2
-└── Évaluation   : [CRITIQUE/MOYEN/FAIBLE]
-    Justification : [Votre analyse]
+└── Évaluation  : [CRITIQUE/MOYEN/FAIBLE]
+    Justification: [Votre analyse]
 ```
 
 ### 1.4 Documentation et rapport initial (15 min)
 
-**Livrable Section 1 :** Rapport de découverte réseau contenant :
-1. **Méthodologie** : Commandes utilisées et justifications
-2. **Résultats** : Tableau récapitulatif des services découverts
-3. **Analyse de risque initial** : Services préoccupants identifiés
-4. **Recommandations** : Actions prioritaires pour la suite
+**Livrable Section 1:** Rapport de découverte réseau contenant:
+1. **Méthodologie**: Commandes utilisées et justifications
+2. **Résultats**: Tableau récapitulatif des services découverts
+3. **Analyse de risque initial**: Services préoccupants identifiés
+4. **Recommandations**: Actions prioritaires pour la suite
 
 ---
 
@@ -131,38 +131,38 @@ Hôte : 192.168.100.X
 **Qu'est-ce que CVE et CVSS ?**
 CVE (Common Vulnerabilities and Exposures) est un système standardisé pour identifier les vulnérabilités de sécurité, tandis que CVSS (Common Vulnerability Scoring System) fournit un score numérique (0-10) représentant la gravité. Les professionnels de sécurité utilisent ces bases pour comprendre la difficulté d'exploitation, l'impact, et la priorisation du patching. Cette phase de recherche détermine quels services découverts ont des faiblesses connues exploitables par les attaquants.
 
-**Ressources principales :**
-- Base CVE officielle : https://cve.mitre.org/
-- Base NVD (National Vulnerability Database) : https://nvd.nist.gov/
-- Exploit Database : https://www.exploit-db.com/
+**Ressources principales:**
+- Base CVE officielle: https://cve.mitre.org/
+- Base NVD (National Vulnerability Database): https://nvd.nist.gov/
+- Exploit Database: https://www.exploit-db.com/
 
 ### 2.2 Recherche manuelle de vulnérabilités (30 min)
 
 En utilisant les versions de services découvertes dans la Section 1, recherchez systématiquement les vulnérabilités connues.
 
-#### Étape 1 : Recherche Base CVE (15 min)
+#### Étape 1: Recherche base CVE (15 min)
 
-**Exercice :** Pour chaque service majeur identifié :
+**Exercice:** Pour chaque service majeur identifié:
 1. Recherchez dans la base CVE les vulnérabilités affectant la version exacte
 2. Notez l'ID CVE, la description, et le score CVSS
 3. Vérifiez la disponibilité d'exploits publics
 
-**Template de recherche :**
+**Template de recherche:**
 ```
-Service : OpenSSH 7.2p2
-├── CVE-2016-0777 : SSH Client Information Disclosure
-│   ├── Score CVSS : 5.3 (MEDIUM)
-│   ├── Exploitabilité : [Facile/Moyen/Difficile]
-│   └── Exploit public : [Oui/Non]
-└── CVE-XXXX-XXXX : [Autre vulnérabilité]
+Service: OpenSSH 7.2p2
+├── CVE-2016-0777: SSH Client Information Disclosure
+│   ├── Score CVSS: 5.3 (MEDIUM)
+│   ├── Exploitabilité: [Facile/Moyen/Difficile]
+│   └── Exploit public: [Oui/Non]
+└── CVE-XXXX-XXXX: [Autre vulnérabilité]
 ```
 
-**Questions d'Analyse :**
+**Questions d'Analyse:**
 1. Quel service a la vulnérabilité avec le score CVSS le plus élevé ?
 2. Quels types de vulnérabilités sont les plus courants ? (RCE, DoS, Info Disclosure)
 3. Comment différencier les vulnérabilités théoriques vs pratiquement exploitables ?
 
-#### Étape 2 : Recherche Base d'Exploits (15 min)
+#### Étape 2: Recherche base d'exploits (15 min)
 
 ```bash
 # Installation de searchsploit (si nécessaire)
@@ -174,7 +174,7 @@ searchsploit vsftpd 2.3.4
 searchsploit apache 2.4.41
 ```
 
-**Exercice :** Documentez pour chaque vulnérabilité :
+**Exercice:** Documentez pour chaque vulnérabilité:
 - Type d'exploit (Metasploit, script standalone, technique manuelle)
 - Niveau de fiabilité et conditions d'exploitation
 - Impact potentiel sur votre environnement lab
@@ -186,16 +186,16 @@ Nmap NSE (Nmap Scripting Engine) étend le scan basique de ports avec des script
 
 ### 2.4 Scan automatisé et validation (45 min)
 
-#### Étape 1 : Scripts de Vulnérabilités Sécurisés (15 min)
+#### Étape 1: Scripts de vulnérabilités sécurisés (15 min)
 
 ```bash
 # Scan général de vulnérabilités
 nmap --script vuln 192.168.100.0/24
 ```
 
-**Observation :** Combien de vulnérabilités automatiques vs recherche manuelle ?
+**Observation:** Combien de vulnérabilités automatiques vs recherche manuelle ?
 
-#### Étape 2 : Scan Ciblé par Service (15 min)
+#### Étape 2: Scan ciblé par service (15 min)
 
 ```bash
 # Scripts spécifiques SSH
@@ -208,35 +208,35 @@ nmap --script ftp-* 192.168.100.20
 nmap --script http-* 192.168.100.30
 ```
 
-#### Étape 3 : Validation et Analyse des Faux Positifs (15 min)
+#### Étape 3: Validation et analyse des faux positifs (15 min)
 
-**Exercice de corrélation :**
+**Exercice de corrélation:**
 1. Comparez résultats automatisés avec votre recherche manuelle
 2. Identifiez les discordances et faux positifs potentiels
 3. Validez les findings critiques avec tests supplémentaires
 
-**Questions d'Analyse :**
+**Questions d'Analyse:**
 1. Quelles vulnérabilités NSE a-t-il manquées par rapport à votre recherche manuelle ?
 2. Quels faux positifs avez-vous identifiés et pourquoi ?
 3. Comment combineriez-vous approche manuelle et automatisée de façon optimale ?
 
 ### 2.5 Scoring CVSS et évaluation de risque (15 min)
 
-**Exercice Pratique :** Complétez une matrice d'évaluation des vulnérabilités :
+**Exercice Pratique:** Complétez une matrice d'évaluation des vulnérabilités:
 
 | Service | Vulnérabilité | CVE | Score CVSS | Exploitabilité | Impact Business | Priorité |
 |---------|---------------|-----|------------|----------------|----------------|----------|
 | SSH 7.2p2 | Info Disclosure | CVE-2016-0777 | 5.3/10 | Facile | Moyen | P2 |
 | ... | ... | ... | ... | ... | ... | ... |
 
-**Éléments à documenter :**
+**Éléments à documenter:**
 - **Description détaillée** de chaque vulnérabilité
 - **Service et version affectés**
 - **Vecteur CVSS** et justification du score
-- **Preuves d'exploitation** : captures d'écran, sorties de commandes
+- **Preuves d'exploitation**: captures d'écran, sorties de commandes
 - **Recommandations de remédiation** prioritaires
 
-**Livrable Section 2 :** Rapport complet de vulnérabilités avec findings priorisés, preuves techniques, et plan de remédiation structuré.
+**Livrable Section 2:** Rapport complet de vulnérabilités avec findings priorisés, preuves techniques, et plan de remédiation structuré.
 
 ---
 
@@ -249,7 +249,7 @@ Suricata est un Système de Détection d'Intrusion (IDS) qui monitor le trafic r
 
 ### 3.2 Déploiement basique Suricata (30 min)
 
-#### Étape 1 : Setup Container et Configuration (15 min)
+#### Étape 1: Setup container et configuration (15 min)
 
 ```bash
 # Vérifier le déploiement Suricata
@@ -259,12 +259,12 @@ docker-compose ps suricata
 docker exec -it monitor-suricata suricata --dump-config
 ```
 
-**Questions d'Analyse :**
+**Questions d'Analyse:**
 1. Quelles interfaces réseau Suricata monitore-t-il ?
 2. Comment le mode promiscuous permet la capture de paquets ?
 3. Quelle est la différence entre déploiement IDS et IPS ?
 
-#### Étape 2 : Chargement de Règles par Défaut (15 min)
+#### Étape 2: Chargement de règles par défaut (15 min)
 
 ```bash
 # Vérifier les règles chargées
@@ -274,14 +274,14 @@ docker exec -it monitor-suricata suricata-update list-sources
 docker exec -it monitor-suricata cat /etc/suricata/suricata.yaml | grep rule-files
 ```
 
-**Test de détection basique :**
+**Test de détection basique:**
 ```bash
 # Générer trafic test pour déclencher alertes
 # Relancez vos commandes nmap de la Section 1
 nmap -sS 192.168.100.10
 ```
 
-**Vérification des alertes :**
+**Vérification des alertes:**
 ```bash
 # Consulter les logs d'alertes
 docker exec -it monitor-suricata tail -f /var/log/suricata/fast.log
@@ -294,7 +294,7 @@ Zeek (anciennement Bro) est un framework d'analyse réseau qui crée des logs d�
 
 ### 3.4 Corrélation de logs et analyse d'événements (45 min)
 
-#### Étape 1 : Collection Multi-Source de Logs (15 min)
+#### Étape 1: Collection multi-source de logs (15 min)
 
 ```bash
 # Démarrer la capture Zeek
@@ -304,54 +304,54 @@ docker exec -it monitor-zeek zeek -C -i eth0
 docker exec -it monitor-zeek ls -la /opt/zeek/logs/current/
 ```
 
-**Analyse des formats de logs :**
+**Analyse des formats de logs:**
 ```bash
 # Examiner les types de logs générés
 docker exec -it monitor-zeek cat /opt/zeek/logs/current/conn.log
 docker exec -it monitor-zeek cat /opt/zeek/logs/current/http.log
 ```
 
-#### Étape 2 : Récréation d'Attaque et Détection (20 min)
+#### Étape 2: Récréation d'attaque et détection (20 min)
 
-**Exercice Principal :** Reproduisez vos activités des Sections 1-2 en monitorant en temps réel :
+**Exercice Principal:** Reproduisez vos activités des Sections 1-2 en monitorant en temps réel:
 
 ```bash
-# Terminal 1 : Surveillance alertes Suricata
+# Terminal 1: Surveillance alertes Suricata
 docker exec -it monitor-suricata tail -f /var/log/suricata/fast.log
 
-# Terminal 2 : Surveillance connexions Zeek  
+# Terminal 2: Surveillance connexions Zeek  
 docker exec -it monitor-zeek tail -f /opt/zeek/logs/current/conn.log
 
-# Terminal 3 : Relancez vos scans précédents
+# Terminal 3: Relancez vos scans précédents
 nmap -sS 192.168.100.0/24
 nmap --script vuln 192.168.100.10
 ```
 
-**Questions d'Analyse :**
+**Questions d'Analyse:**
 1. Comment les différents types de scans nmap apparaissent dans les alertes Suricata ?
 2. Quels patterns de connexion Zeek log-t-il pour les scans de ports ?
 3. Pouvez-vous distinguer les outils automatisés de la reconnaissance manuelle ?
 
-#### Étape 3 : Corrélation d'Événements (10 min)
+#### Étape 3: Corrélation d'événements (10 min)
 
-**Exercice de timeline :**
+**Exercice de timeline:**
 1. Croisez les alertes Suricata avec les logs de connexion Zeek
 2. Identifiez la timeline et progression de votre "attaque"
 3. Mappez vos techniques au framework MITRE ATT&CK
 
-**Template d'analyse d'incident :**
+**Template d'analyse d'incident:**
 ```
-Timestamp : [HH:MM:SS]
-Source IP : [Votre IP]
-Activité  : [Scan de ports / Test exploit / etc.]
-├── Détection Suricata : [Règle déclenchée]
-├── Logs Zeek         : [Connexions observées]
-└── TTPs MITRE        : [T1046: Network Service Scanning]
+Timestamp: [HH:MM:SS]
+Source IP: [Votre IP]
+Activité : [Scan de ports / Test exploit / etc.]
+├── Détection Suricata: [Règle déclenchée]
+├── Logs Zeek        : [Connexions observées]
+└── TTPs MITRE       : [T1046: Network Service Scanning]
 ```
 
 ### 3.5 Création de règles personnalisées (15 min)
 
-**Exercice Pratique :** Créez des règles de détection pour patterns spécifiques découverts :
+**Exercice Pratique:** Créez des règles de détection pour patterns spécifiques découverts:
 
 #### Règle de détection brute force SSH
 ```bash
@@ -365,7 +365,7 @@ echo 'alert tcp any any -> any 22 (msg:"Brute force SSH potentiel"; flow:to_serv
 echo 'alert tcp any any -> any any (msg:"Scan de ports détecté"; flags:S; threshold:type threshold, track by_src, count 10, seconds 5; sid:1000002;)' >> /etc/suricata/rules/local.rules
 ```
 
-**Test de vos règles :**
+**Test de vos règles:**
 ```bash
 # Recharger la configuration
 docker exec -it monitor-suricata suricatasc -c reload-rules
@@ -374,12 +374,12 @@ docker exec -it monitor-suricata suricatasc -c reload-rules
 nmap -sS 192.168.100.10
 ```
 
-**Questions d'Analyse :**
+**Questions d'Analyse:**
 1. Comment les paramètres de seuil équilibrent faux positifs vs couverture de détection ?
 2. Quels autres services nécessitent détection brute force personnalisée ?
 3. Comment détecteriez-vous le scan de vulnérabilités de la Section 2 ?
 
-**Livrable Section 3 :** Documentation de déploiement de détection incluant :
+**Livrable Section 3:** Documentation de déploiement de détection incluant:
 - Configuration Suricata et règles personnalisées
 - Analyse d'alertes et corrélation multi-sources
 - Reconstruction de timeline d'incident avec preuves
@@ -396,9 +396,9 @@ Les scripts d'automatisation sécurité éliminent les tâches manuelles répét
 
 ### 4.2 Développement script d'évaluation de vulnérabilités (45 min)
 
-#### Étape 1 : Script d'Automatisation Basique (20 min)
+#### Étape 1: Script d'automatisation basique (20 min)
 
-**Exercice :** Créez un script bash automatisant le workflow complet des Sections 1-2 :
+**Exercice:** Créez un script bash automatisant le workflow complet des Sections 1-2:
 
 ```bash
 #!/bin/bash
@@ -439,14 +439,14 @@ echo "=== Génération de Rapport ==="
 echo "Scan terminé. Résultats dans $LOG_DIR"
 ```
 
-**Questions d'Analyse :**
+**Questions d'Analyse:**
 1. Comment l'automatisation change-t-elle la portée et fréquence des évaluations de sécurité ?
 2. Quelle gestion d'erreurs et logging supplémentaires devraient être inclus ?
 3. Comment modifieriez-vous ce script pour différents environnements réseau ?
 
-#### Étape 2 : Reporting et Alertes Améliorés (15 min)
+#### Étape 2: Reporting et alertes améliorés (15 min)
 
-**Améliorations au script :**
+**Améliorations au script:**
 
 ```bash
 # Ajout d'un générateur de rapport HTML
@@ -485,7 +485,7 @@ EOF
 }
 ```
 
-#### Étape 3 : Tests d'Intégration (10 min)
+#### Étape 3: Tests d'intégration (10 min)
 
 ```bash
 # Rendre le script exécutable
@@ -505,9 +505,9 @@ L'intégration sécurité Intégration Continue/Déploiement Continu (CI/CD) lan
 
 ### 4.4 Intégration pipeline sécurité CI/CD (30 min)
 
-#### Étape 1 : Setup Git Hooks (15 min)
+#### Étape 1: Setup git hooks (15 min)
 
-**Exercice :** Créez un workflow GitHub Actions pour automatisation sécurité :
+**Exercice:** Créez un workflow GitHub Actions pour automatisation sécurité:
 
 ```yaml
 # .github/workflows/security-scan.yml
@@ -561,12 +561,12 @@ jobs:
         path: /tmp/security_scan_*/*
 ```
 
-**Questions d'Analyse :**
+**Questions d'Analyse:**
 1. À quelles étapes CI/CD les scans sécurité devraient-ils s'exécuter ?
 2. Comment équilibrer minutie sécurité avec vitesse de build ?
 3. Quels niveaux de sévérité de vulnérabilité devraient casser les builds ?
 
-#### Étape 2 : Scan Sécurité Container (15 min)
+#### Étape 2: Scan sécurité container (15 min)
 
 ```bash
 # Ajouter scan d'images Docker au script
@@ -594,7 +594,7 @@ scan_docker_images() {
 **Qu'est-ce que Secator ?**
 Secator est un framework d'automatisation sécurité complet qui chaîne plusieurs outils de sécurité ensemble en workflows standardisés. Au lieu de lancer manuellement des outils individuels comme nmap, puis nikto, puis nuclei, Secator orchestre des évaluations multi-outils complexes avec une seule commande. Les pentesteurs professionnels et consultants sécurité utilisent Secator pour standardiser leurs méthodologies, assurer une couverture complète, et générer un reporting cohérent à travers différents engagements.
 
-**Exercice Avancé** (si les ressources le permettent) :
+**Exercice Avancé** (si les ressources le permettent):
 
 ```bash
 # Installation de Secator
@@ -607,12 +607,12 @@ secator x host_recon 192.168.100.10 -p all
 secator x web 192.168.100.30
 ```
 
-**Questions d'Analyse :**
+**Questions d'Analyse:**
 1. Comment le workflow de Secator se compare-t-il à votre approche manuelle ?
 2. Quels outils Secator a-t-il inclus que vous n'avez pas utilisés manuellement ?
 3. Quand utiliseriez-vous l'automatisation framework vs scripts personnalisés ?
 
-**Livrable Section 4 :** Package complet d'automatisation incluant :
+**Livrable Section 4:** Package complet d'automatisation incluant:
 - Scripts d'automatisation testés et documentés
 - Workflow CI/CD avec gates sécurité
 - Analyse comparative efficacité manuelle vs automatisée
@@ -624,43 +624,43 @@ secator x web 192.168.100.30
 
 ### Rapports Techniques Requis
 
-#### 1. Rapport de Découverte Réseau
+#### 1. Rapport de découverte réseau
 - **Méthodologie** détaillée avec commandes utilisées
 - **Inventaire complet** des services découverts
 - **Analyse de risque** initial basé sur les expositions
 
-#### 2. Évaluation de Vulnérabilités
+#### 2. Évaluation de vulnérabilités
 - **Matrice de vulnérabilités** avec scoring CVSS
-- **Preuves techniques** : captures d'écran et sorties de commandes
+- **Preuves techniques**: captures d'écran et sorties de commandes
 - **Plan de remédiation** priorisé
 
-#### 3. Documentation de Détection
+#### 3. Documentation de détection
 - **Configuration IDS/logs** avec règles personnalisées
 - **Analyse d'incidents** avec corrélation d'événements
 - **Procédures d'investigation** documentées
 
-#### 4. Package d'Automatisation
+#### 4. Package d'automatisation
 - **Scripts fonctionnels** avec documentation
 - **Intégration CI/CD** testée
 - **Métriques d'efficacité** comparative
 
 ### Critères d'Évaluation
 
-- **Compréhension technique** (30%) : Réponses aux questions d'analyse avec justifications
-- **Application pratique** (40%) : Commandes exécutées correctement avec résultats attendus  
-- **Documentation** (20%) : Rapports structurés et professionnels
-- **Innovation** (10%) : Améliorations ou découvertes au-delà des exigences minimales
+- **Compréhension technique** (30%): Réponses aux questions d'analyse avec justifications
+- **Application pratique** (40%): Commandes exécutées correctement avec résultats attendus  
+- **Documentation** (20%): Rapports structurés et professionnels
+- **Innovation** (10%): Améliorations ou découvertes au-delà des exigences minimales
 
 ### Conseils pour la Réussite
 
-1. **Documentez tout** : Chaque commande, résultat, et analyse
-2. **Testez vos scripts** : Vérifiez que l'automatisation fonctionne de façon répétable
-3. **Corréllez les findings** : Liens entre découverte, vulnérabilités, et détection
-4. **Pensez défense** : Comment un SOC détecterait-il vos activités ?
-5. **Priorisez les risques** : Focus sur impact business réel
+1. **Documentez tout**: Chaque commande, résultat, et analyse
+2. **Testez vos scripts**: Vérifiez que l'automatisation fonctionne de façon répétable
+3. **Corréllez les findings**: Liens entre découverte, vulnérabilités, et détection
+4. **Pensez défense**: Comment un SOC détecterait-il vos activités ?
+5. **Priorisez les risques**: Focus sur impact business réel
 
 ---
 
 **Bonne chance dans votre exploration de la détection de vulnérabilités !**
 
-*Ce TP vous a fait découvrir un cycle complet de sécurité : attaque, analyse, et défense. Ces compétences sont essentielles pour tout professionnel de cybersécurité moderne.*
+*Ce TP vous a fait découvrir un cycle complet de sécurité: attaque, analyse, et défense. Ces compétences sont essentielles pour tout professionnel de cybersécurité moderne.*
