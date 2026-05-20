@@ -1,5 +1,3 @@
-version: '3.8'
-
 networks:
   vuln-lab:
     driver: bridge
@@ -23,8 +21,8 @@ services:
       - USER_PASSWORD=password
       - USER_NAME=user
     ports:
-      - "22:2222"      # Port standard
-      - "2222:2223"    # Port non-standard pour exercices
+      - "22:22"        # Port standard SSH
+      - "2222:22"      # Port non-standard pour exercices
     networks:
       vuln-lab:
         ipv4_address: ${SSH_TARGET_IP}
@@ -60,7 +58,7 @@ services:
     image: stilliard/pure-ftpd:hardened
     container_name: vuln-ftp-pure
     environment:
-      - PUBLICHOST=${FTP_TARGET_IP}
+      - PUBLICHOST=192.168.100.21
       - FTP_USER_NAME=anonymous
       - FTP_USER_PASS=
     ports:
@@ -69,7 +67,7 @@ services:
       - ./data/ftp:/home/ftpusers
     networks:
       vuln-lab:
-        ipv4_address: ${FTP_TARGET_IP}
+        ipv4_address: 192.168.100.21
         aliases:
           - ftp-pure
     restart: always
@@ -77,7 +75,7 @@ services:
       resources:
         limits:
           cpus: '0.3'
-          memory: 128M
+          memory: 256M
 
   target-web-dvwa:
     image: vulnerables/web-dvwa:latest
@@ -107,7 +105,7 @@ services:
       - ./configs/apache/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
     networks:
       vuln-lab:
-        ipv4_address: ${WEB_TARGET_IP}
+        ipv4_address: 192.168.100.31
         aliases:
           - apache-status
     restart: always
@@ -115,7 +113,7 @@ services:
       resources:
         limits:
           cpus: '0.3'
-          memory: 128M
+          memory: 256M
 
   target-web-nginx:
     image: nginx:1.18.0-alpine
@@ -127,7 +125,7 @@ services:
       - ./data/web:/usr/share/nginx/html:ro
     networks:
       vuln-lab:
-        ipv4_address: ${WEB_TARGET_IP}
+        ipv4_address: 192.168.100.32
         aliases:
           - nginx-listing
     restart: always
@@ -135,4 +133,4 @@ services:
       resources:
         limits:
           cpus: '0.3'
-          memory: 128M
+          memory: 256M
