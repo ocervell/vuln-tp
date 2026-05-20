@@ -134,3 +134,41 @@ services:
         limits:
           cpus: '0.3'
           memory: 256M
+
+  monitor-suricata:
+    image: jasonish/suricata:latest
+    container_name: vuln-monitor-suricata
+    command: suricata -c /etc/suricata/suricata.yaml -i eth0
+    volumes:
+      - ./configs/suricata/suricata.yaml:/etc/suricata/suricata.yaml:ro
+      - ./configs/suricata/rules:/etc/suricata/rules:ro
+      - security-logs:/var/log/suricata
+    networks:
+      vuln-lab:
+        ipv4_address: ${MONITOR_SURICATA_IP}
+    cap_add:
+      - NET_ADMIN
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+
+# monitor-zeek:
+  #   image: blacktop/zeek:latest
+  #   container_name: vuln-monitor-zeek
+  #   command: zeek -i eth0
+  #   volumes:
+  #     - security-logs:/opt/zeek/logs
+  #   networks:
+  #     vuln-lab:
+  #       ipv4_address: ${MONITOR_ZEEK_IP}
+  #   cap_add:
+  #     - NET_ADMIN
+  #   restart: always
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         cpus: '0.5'
+  #         memory: 512M
