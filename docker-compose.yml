@@ -10,16 +10,15 @@ volumes:
   ftp-data:
 
 services:
+  # === SERVICES VULNÉRABLES POUR ÉDUCATION ===
+  # Les versions choisies contiennent des CVE spécifiques pour les exercices du TP
+
   target-ssh:
-    image: lscr.io/linuxserver/openssh-server:latest
+    image: rastasheep/ubuntu-sshd:16.04  # Ubuntu 16.04 with OpenSSH 7.2p2 (CVE-2016-0777)
     container_name: vuln-ssh
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Paris
-      - PASSWORD_ACCESS=true
-      - USER_PASSWORD=password
-      - USER_NAME=user
+      - ROOT_PASSWORD=password
+    command: sh -c "useradd -m -s /bin/bash user && echo 'user:password' | chpasswd && /usr/sbin/sshd -D"
     ports:
       - "2200:22"      # SSH standard accessible via port 2200 (avoids host SSH conflict)
       - "2222:22"      # Port non-standard pour exercices
@@ -34,14 +33,16 @@ services:
           memory: 256M
 
   target-ftp-vsftpd:
-    image: fauria/vsftpd:latest
+    image: fauria/vsftpd:latest  # vsftpd avec configuration vulnérable pour exercices pratiques
     container_name: vuln-ftp-vsftpd
     environment:
       - FTP_USER=admin
-      - FTP_PASS=admin
+      - FTP_PASS=admin  # Mot de passe faible pour démonstration brute force
       - PASV_ADDRESS=${FTP_VSFTPD_IP}
+      - ANONYMOUS=YES  # Accès anonyme activé (risque sécurité)
     ports:
       - "21:21"
+      - "30000-30009:30000-30009"  # Ports PASV
     volumes:
       - ftp-data:/home/vsftpd
     networks:
@@ -97,7 +98,7 @@ services:
           memory: 512M
 
   target-web-apache:
-    image: httpd:2.4.41-alpine
+    image: httpd:2.4.41-alpine  # Apache 2.4.41 vulnérable à CVE-2011-3192 (Range Header DoS)
     container_name: vuln-web-apache
     ports:
       - "8080:80"
@@ -116,7 +117,7 @@ services:
           memory: 256M
 
   target-web-nginx:
-    image: nginx:1.18.0-alpine
+    image: nginx:1.18.0-alpine  # nginx 1.18.0 avec vulnérabilités détectables par NSE
     container_name: vuln-web-nginx
     ports:
       - "8081:80"
