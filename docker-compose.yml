@@ -138,7 +138,7 @@ services:
   monitor-suricata:
     image: jasonish/suricata:latest
     container_name: vuln-monitor-suricata
-    command: suricata -c /etc/suricata/suricata.yaml -i eth0
+    command: suricata -c /etc/suricata/suricata.yaml -i eth0 -v
     volumes:
       - ./configs/suricata/suricata.yaml:/etc/suricata/suricata.yaml:ro
       - ./configs/suricata/rules:/etc/suricata/rules:ro
@@ -148,6 +148,8 @@ services:
         ipv4_address: ${MONITOR_SURICATA_IP}
     cap_add:
       - NET_ADMIN
+      - NET_RAW
+    privileged: true
     restart: always
     deploy:
       resources:
@@ -155,20 +157,22 @@ services:
           cpus: '0.5'
           memory: 512M
 
-# monitor-zeek:
-  #   image: blacktop/zeek:latest
-  #   container_name: vuln-monitor-zeek
-  #   command: zeek -i eth0
-  #   volumes:
-  #     - security-logs:/opt/zeek/logs
-  #   networks:
-  #     vuln-lab:
-  #       ipv4_address: ${MONITOR_ZEEK_IP}
-  #   cap_add:
-  #     - NET_ADMIN
-  #   restart: always
-  #   deploy:
-  #     resources:
-  #       limits:
-  #         cpus: '0.5'
-  #         memory: 512M
+  monitor-zeek:
+    image: zeek/zeek:latest
+    container_name: vuln-monitor-zeek
+    command: sh -c "cd /logs && /usr/local/zeek/bin/zeek -i eth0 -C"
+    volumes:
+      - security-logs:/logs
+    networks:
+      vuln-lab:
+        ipv4_address: ${MONITOR_ZEEK_IP}
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    privileged: true
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
