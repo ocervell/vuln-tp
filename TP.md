@@ -22,7 +22,7 @@ Votre environnement de laboratoire Docker simule un réseau entreprise avec :
 
 ---
 
-## Section 1 : Découverte Réseau Basique (2h)
+## Section 1: Découverte réseau basique (2h)
 
 ### 1.1 Introduction à Nmap (15 min)
 
@@ -38,7 +38,7 @@ nmap --version
 docker-compose up -d
 ```
 
-### 1.2 Découverte Progressive d'Hôtes (45 min)
+### 1.2 Découverte progressive d'hôtes (45 min)
 
 Vous recevez un réseau cible avec des informations minimales. Votre mission : découvrir systématiquement tous les services exposés.
 
@@ -85,9 +85,9 @@ nmap -Pn -sS 192.168.100.0/24
 2. Comment les scans SYN évitent-ils la détection comparés aux scans connect ?
 3. Quand utiliseriez-vous ces techniques en test légitime ?
 
-### 1.3 Énumération de Services et Fingerprinting (45 min)
+### 1.3 Énumération de services et fingerprinting (45 min)
 
-#### Techniques de Découverte Avancées
+#### Techniques de découverte avancées
 
 ```bash
 # Détection de versions et scripts par défaut
@@ -97,7 +97,7 @@ nmap -sV -sC 192.168.100.0/24
 nmap --script=banner 192.168.100.0/24
 ```
 
-#### Exercice Pratique : Cartographie Réseau
+#### Exercice pratique: cartographie réseau
 Créez une carte topologique complète incluant :
 - **Inventaire d'hôtes :** IP, statut, OS probable
 - **Services découverts :** Port, protocole, version, bannière
@@ -114,7 +114,7 @@ Hôte : 192.168.100.X
     Justification : [Votre analyse]
 ```
 
-### 1.4 Documentation et Rapport Initial (15 min)
+### 1.4 Documentation et rapport initial (15 min)
 
 **Livrable Section 1 :** Rapport de découverte réseau contenant :
 1. **Méthodologie** : Commandes utilisées et justifications
@@ -124,9 +124,9 @@ Hôte : 192.168.100.X
 
 ---
 
-## Section 2 : Analyse et Recherche de Vulnérabilités (2h)
+## Section 2: Analyse et recherche de vulnérabilités (2h)
 
-### 2.1 Introduction aux Bases de Données CVE et CVSS (15 min)
+### 2.1 Introduction aux bases de données CVE et CVSS (15 min)
 
 **Qu'est-ce que CVE et CVSS ?**
 CVE (Common Vulnerabilities and Exposures) est un système standardisé pour identifier les vulnérabilités de sécurité, tandis que CVSS (Common Vulnerability Scoring System) fournit un score numérique (0-10) représentant la gravité. Les professionnels de sécurité utilisent ces bases pour comprendre la difficulté d'exploitation, l'impact, et la priorisation du patching. Cette phase de recherche détermine quels services découverts ont des faiblesses connues exploitables par les attaquants.
@@ -136,7 +136,7 @@ CVE (Common Vulnerabilities and Exposures) est un système standardisé pour ide
 - Base NVD (National Vulnerability Database) : https://nvd.nist.gov/
 - Exploit Database : https://www.exploit-db.com/
 
-### 2.2 Recherche Manuelle de Vulnérabilités (30 min)
+### 2.2 Recherche manuelle de vulnérabilités (30 min)
 
 En utilisant les versions de services découvertes dans la Section 1, recherchez systématiquement les vulnérabilités connues.
 
@@ -179,12 +179,12 @@ searchsploit apache 2.4.41
 - Niveau de fiabilité et conditions d'exploitation
 - Impact potentiel sur votre environnement lab
 
-### 2.3 Introduction au Scan Automatisé avec Nmap NSE (15 min)
+### 2.3 Introduction au scan automatisé avec Nmap NSE (15 min)
 
 **Qu'est-ce que Nmap NSE ?**
 Nmap NSE (Nmap Scripting Engine) étend le scan basique de ports avec des scripts spécialisés de détection de vulnérabilités qui testent des failles de sécurité spécifiques. Contrairement à la recherche manuelle, le scan automatisé peut rapidement tester des centaines de vulnérabilités simultanément mais peut produire des faux positifs. Les pentesteurs professionnels l'utilisent pour évaluation initiale avant validation manuelle.
 
-### 2.4 Scan Automatisé et Validation (45 min)
+### 2.4 Scan automatisé et validation (45 min)
 
 #### Étape 1 : Scripts de Vulnérabilités Sécurisés (15 min)
 
@@ -220,7 +220,7 @@ nmap --script http-* 192.168.100.30
 2. Quels faux positifs avez-vous identifiés et pourquoi ?
 3. Comment combineriez-vous approche manuelle et automatisée de façon optimale ?
 
-### 2.5 Scoring CVSS et Évaluation de Risque (15 min)
+### 2.5 Scoring CVSS et évaluation de risque (15 min)
 
 **Exercice Pratique :** Complétez une matrice d'évaluation des vulnérabilités :
 
@@ -240,14 +240,14 @@ nmap --script http-* 192.168.100.30
 
 ---
 
-## Section 3 : Configuration de Détection et Monitoring (2h)
+## Section 3: Configuration de détection et monitoring (2h)
 
 ### 3.1 Introduction à Suricata IDS (15 min)
 
 **Qu'est-ce que Suricata ?**
 Suricata est un Système de Détection d'Intrusion (IDS) qui monitor le trafic réseau en temps réel, comparant les paquets contre des règles de signatures pour détecter l'activité malveillante. Contrairement aux firewalls qui bloquent le trafic, les systèmes IDS analysent passivement et alertent sur des patterns suspects comme les scans de ports, tentatives d'exploits, ou exfiltration de données. Les centres opérationnels de sécurité (SOCs) utilisent l'IDS pour détecter les attaques qui contournent les défenses périmètriques et fournir des preuves légales d'incidents de sécurité.
 
-### 3.2 Déploiement Basique Suricata (30 min)
+### 3.2 Déploiement basique Suricata (30 min)
 
 #### Étape 1 : Setup Container et Configuration (15 min)
 
@@ -287,12 +287,12 @@ nmap -sS 192.168.100.10
 docker exec -it monitor-suricata tail -f /var/log/suricata/fast.log
 ```
 
-### 3.3 Introduction à Zeek pour l'Analyse de Logs (15 min)
+### 3.3 Introduction à Zeek pour l'analyse de logs (15 min)
 
 **Qu'est-ce que Zeek ?**
 Zeek (anciennement Bro) est un framework d'analyse réseau qui crée des logs détaillés des connexions réseau, protocoles, et données de couche application. Tandis que Suricata se concentre sur la détection basée signatures, Zeek fournit l'analyse comportementale et crée des logs structurés que les analystes peuvent interroger. Les équipes de sécurité utilisent les logs Zeek pour investigation d'incidents, threat hunting, et comprendre les patterns de comportement réseau normal vs anormal.
 
-### 3.4 Corrélation de Logs et Analyse d'Événements (45 min)
+### 3.4 Corrélation de logs et analyse d'événements (45 min)
 
 #### Étape 1 : Collection Multi-Source de Logs (15 min)
 
@@ -349,7 +349,7 @@ Activité  : [Scan de ports / Test exploit / etc.]
 └── TTPs MITRE        : [T1046: Network Service Scanning]
 ```
 
-### 3.5 Création de Règles Personnalisées (15 min)
+### 3.5 Création de règles personnalisées (15 min)
 
 **Exercice Pratique :** Créez des règles de détection pour patterns spécifiques découverts :
 
@@ -387,14 +387,14 @@ nmap -sS 192.168.100.10
 
 ---
 
-## Section 4 : Automatisation et Intégration (2h)
+## Section 4: Automatisation et intégration (2h)
 
-### 4.1 Introduction au Scripting d'Automatisation Sécurité (15 min)
+### 4.1 Introduction au scripting d'automatisation sécurité (15 min)
 
 **Pourquoi l'automatisation sécurité ?**
 Les scripts d'automatisation sécurité éliminent les tâches manuelles répétitives et assurent une méthodologie cohérente à travers les évaluations de sécurité. Plutôt que de lancer des commandes individuelles, les scripts automatisés peuvent effectuer des workflows complets d'évaluation de vulnérabilités, générer des rapports standardisés, et programmer des scans réguliers. Les équipes sécurité entreprise utilisent l'automatisation pour monitoring sécurité continu, reporting de conformité, et réponse rapide aux incidents pour réduire le temps entre découverte de vulnérabilité et remédiation.
 
-### 4.2 Développement Script d'Évaluation de Vulnérabilités (45 min)
+### 4.2 Développement script d'évaluation de vulnérabilités (45 min)
 
 #### Étape 1 : Script d'Automatisation Basique (20 min)
 
@@ -498,12 +498,12 @@ chmod +x auto_vuln_scan.sh
 ls -la /tmp/security_scan_*/
 ```
 
-### 4.3 Introduction à l'Intégration Sécurité CI/CD (15 min)
+### 4.3 Introduction à l'intégration sécurité CI/CD (15 min)
 
 **Qu'est-ce que DevSecOps ?**
 L'intégration sécurité Intégration Continue/Déploiement Continu (CI/CD) lance automatiquement des scans de sécurité chaque fois que du code est commité ou déployé. Cette approche "shift-left" capture les vulnérabilités tôt dans le développement plutôt qu'en production, réduisant les coûts de correction et la dette sécurité. Les équipes DevSecOps intègrent le scan de vulnérabilités dans les workflows Git, builds Docker, et pipelines de déploiement pour s'assurer que les gates sécurité empêchent le code vulnérable d'atteindre les environnements de production.
 
-### 4.4 Intégration Pipeline Sécurité CI/CD (30 min)
+### 4.4 Intégration pipeline sécurité CI/CD (30 min)
 
 #### Étape 1 : Setup Git Hooks (15 min)
 
@@ -589,7 +589,7 @@ scan_docker_images() {
 }
 ```
 
-### 4.5 Introduction au Framework Secator (Section Avancée Optionnelle - 15 min)
+### 4.5 Introduction au framework Secator (section avancée optionnelle - 15 min)
 
 **Qu'est-ce que Secator ?**
 Secator est un framework d'automatisation sécurité complet qui chaîne plusieurs outils de sécurité ensemble en workflows standardisés. Au lieu de lancer manuellement des outils individuels comme nmap, puis nikto, puis nuclei, Secator orchestre des évaluations multi-outils complexes avec une seule commande. Les pentesteurs professionnels et consultants sécurité utilisent Secator pour standardiser leurs méthodologies, assurer une couverture complète, et générer un reporting cohérent à travers différents engagements.
